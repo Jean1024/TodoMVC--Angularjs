@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Template • TodoMVC</title>
+  <link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+  <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+  <!-- CSS overrides - remove if you don't need it -->
+  <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body ng-app="TodoApp">
+  <section class="todoapp" ng-controller="MainController">
+    <header class="header">
+      <h1>{{ title }}</h1>
+      <!--
+				ng-submit 作用域表单元素上
+				          当表单提交的时候，会触发 submit 事件，然后执行对应的处理函数
+				          只有两种情况会提交触发这个 submit 事件：
+				          		1. 表单中具有 submit 类型的 input 可以提交
+				          		2. 表单中在某个表单控制上按回车也可以提交表单
+       -->
+      <form ng-submit="addTodo()">
+      	<input type="text" class="new-todo" placeholder="What needs to be done?" autofocus ng-model="todoText">
+      </form>
+    </header>
+    <!-- This section should be hidden by default and shown when there are todos -->
+    <section class="main">
+      <input class="toggle-all" type="checkbox" ng-model="toggleAll" ng-click="toggle()">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <!-- These are here just to show the structure of the list items -->
+        <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+        <!--
+					ng-class 指令专门可以解决样式的问题
+					      ng-class="{css类名: bool}"
+					      当 bool 为 true，作用 css类
+					      当 bool 为 false，取消 css 类
+         -->
+        <li ng-class="{completed: todo.completed}" ng-repeat="todo in todos | filter : todoFilter" ng-show="todo.show" >
+          <div class="view">
+            <input class="toggle" type="checkbox" ng-model="todo.completed" ng-click="ctrolToggle()">
+            <label ng-dbclick="edit()">{{ todo.title }}</label>
+            <button class="destroy" ng-click=deleteSelf(todo.id)></button>
+          </div>
+          <input class="edit" value="Create a TodoMVC template">
+        </li>
+      </ul>
+    </section>
+    <!-- This footer should hidden by default and shown when there are todos -->
+    <footer class="footer">
+      <!-- This should be `0 items left` by default -->
+      <span class="todo-count"><strong>{{left}}</strong> item left</span>
+      <!-- Remove this if you don't implement routing -->
+      <ul class="filters">
+        <li>
+          <a ng-class="{selected:todoFilter.completed==undefined}" href="#/" ng-click="todoFilter={}">All</a>
+        </li>
+        <li>
+          <a  ng-class="{selected:todoFilter.completed==false}" href="#/active" ng-click="todoFilter={completed:false}">Active</a>
+        </li>
+        <li>
+          <a ng-class="{selected:todoFilter.completed==true}" href="#/completed" ng-click="todoFilter={completed:true}">Completed</a>
+        </li>
+      </ul>
+      <!-- Hidden if no completed items are left ↓ -->
+      <button class="clear-completed" ng-click="clear()">Clear completed</button>
+    </footer>
+  </section>
+  <footer class="info">
+    <p>Double-click to edit a todo</p>
+    <!-- Remove the below line ↓ -->
+    <p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+    <!-- Change this out with your name and url ↓ -->
+    <p>Created by <a href="http://todomvc.com">you</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+  </footer>
+  <!-- Scripts here. Don't remove ↓ -->
+  <!-- <script src="node_modules/todomvc-common/base.js"></script> -->
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
